@@ -9,9 +9,10 @@ export default function App(){
   }
   return(
     <div>
-      <h1 className="text-2xl text-red-500">Task List</h1>
-      <input type="text" onChange={(e)=> setTask(e.target.value)} value={task} />
-      <button onClick={add}>Add</button>
+      <h1 className="text-6xl text-black font-serif">Task List</h1>
+      <input className='border-2 border-black rounded-md'
+       type="text" onChange={(e)=> setTask(e.target.value)} value={task} />
+      <button className='border-2 bg-gray-400 rounded-md' onClick={add}>Add</button>
       <ul>
         {tasks.map((task, positioning)=> {
           return(
