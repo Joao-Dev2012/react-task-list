@@ -1,1 +1,83 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+:root {
+  color-scheme: light;
+  background: #fafafa;
+  color: #171717;
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #171717;
+  color: #fff;
+}
+
+.task-input,
+.add-button {
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.task-input:focus-visible {
+  border-color: #171717;
+  outline: 2px solid #171717;
+  outline-offset: 3px;
+}
+
+.add-button {
+  cursor: pointer;
+}
+
+.add-button:focus-visible {
+  outline: 2px solid #171717;
+  outline-offset: 3px;
+}
+
+.add-button:active {
+  background: #404040;
+}
+
+@media (hover: hover) {
+  .add-button:hover {
+    background: #333;
+  }
+
+  .task-input:hover {
+    border-color: #737373;
+  }
+}
+
+.task-row {
+  animation: task-appear 180ms ease-out;
+}
+
+@keyframes task-appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-input,
+  .add-button {
+    transition: none;
+  }
+
+  .task-row {
+    animation: none;
+  }
+}
