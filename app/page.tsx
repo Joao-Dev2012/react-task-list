@@ -1,11 +1,10 @@
 'use client'
-
+import { supabase } from '@/lib/supabase'
 import { useState } from 'react'
 
 export default function App() {
   const [task, setTask] = useState('')
   const [tasks, setTasks] = useState<string[]>([])
-
   function add() {
     if (!task.trim()) return
 
