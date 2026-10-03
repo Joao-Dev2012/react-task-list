@@ -1,16 +1,27 @@
 'use client'
-import { supabase } from '@/lib/supabase'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import { getTasks } from '@/services/tasks'
 
 export default function App() {
   const [task, setTask] = useState('')
-  const [tasks, setTasks] = useState<string[]>([])
-  function add() {
-    if (!task.trim()) return
-
-    setTasks((currentTasks) => [...currentTasks, task.trim()])
-    setTask('')
+  const [tasks,setTasks] = useState<Task[]>([])
+  type Task = {
+    id:number,
+    task:string
+    completed:boolean
   }
+  function add() {
+
+  }
+  useEffect(() => {
+    async function loadTasks() {
+      const data = await getTasks()
+      setTasks(data)
+      console.log(data)
+  }
+
+  loadTasks()
+}, [])  
 
   return (
     <div className="mx-auto flex min-h-svh max-w-5xl flex-col px-6 sm:px-10">
@@ -71,12 +82,12 @@ export default function App() {
             </div>
           ) : (
             <ul className="divide-y divide-neutral-200 border-b border-neutral-200">
-              {tasks.map((task, positioning) => (
-                <li key={positioning} className="task-row flex items-baseline gap-5 py-5 sm:gap-7">
+              {tasks.map((task) => (
+                <li key={task.id} className="task-row flex items-baseline gap-5 py-5 sm:gap-7">
                   <span aria-hidden="true" className="shrink-0 font-mono text-xs tabular-nums text-neutral-400">
-                    {String(positioning + 1).padStart(2, '0')}
+                    {String(task.id).padStart(2, '0')}
                   </span>
-                  <span className="min-w-0 text-sm leading-7 wrap-anywhere sm:text-base">{task}</span>
+                  <span className="min-w-0 text-sm leading-7 wrap-anywhere sm:text-base">{task.task}</span>
                 </li>
               ))}
             </ul>
