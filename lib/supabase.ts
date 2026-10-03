@@ -6,4 +6,5 @@ import { createClient } from '@supabase/supabase-js'
     if (!URL || !KEY) {
       throw new Error('Nao foi possivel encontrar a chave') 
     }
+    console.log('URL recebida:', JSON.stringify(URL))
     export const supabase = createClient(URL,KEY)
