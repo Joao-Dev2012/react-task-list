@@ -1,6 +1,6 @@
 'use client'
 import { useState,useEffect } from 'react'
-import { getTasks, createTasks } from '@/services/tasks'
+import { getTasks, createTask } from '@/services/tasks'
 
 export default function App() {
   const [task, setTask] = useState('')
@@ -10,14 +10,15 @@ export default function App() {
     task:string
     completed:boolean
   }
-  function add() {
-    createTasks()
+  async function add() {
+    const newTask = await createTask(task)
+    setTasks([...tasks,newTask])
+    setTask('')
   }
   useEffect(() => {
     async function loadTasks() {
       const data = await getTasks()
       setTasks(data)
-      console.log(data)
   }
 
   loadTasks()

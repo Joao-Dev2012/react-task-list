@@ -8,7 +8,7 @@ export async function getTasks() {
     }
     return data
 }
-export async function createTasks(task:string) {
+export async function createTask(task:string) {
     const {data,error} = await supabase.from('tasks').insert({
         task: task,
         completed: false
