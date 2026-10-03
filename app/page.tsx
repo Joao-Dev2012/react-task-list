@@ -1,6 +1,6 @@
 'use client'
 import { useState,useEffect } from 'react'
-import { getTasks } from '@/services/tasks'
+import { getTasks, createTasks } from '@/services/tasks'
 
 export default function App() {
   const [task, setTask] = useState('')
@@ -11,7 +11,7 @@ export default function App() {
     completed:boolean
   }
   function add() {
-
+    createTasks()
   }
   useEffect(() => {
     async function loadTasks() {

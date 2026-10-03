@@ -8,3 +8,13 @@ export async function getTasks() {
     }
     return data
 }
+export async function createTasks(task:string) {
+    const {data,error} = await supabase.from('tasks').insert({
+        task: task,
+        completed: false
+    }).select().single()
+    if(error){
+        throw new Error(`Error, couldn't create task`)
+    }
+    return data
+}
