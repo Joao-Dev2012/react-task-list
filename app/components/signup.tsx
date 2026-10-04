@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { SignUp } from "@/services/tasks"
+import { SignUp } from "@/services/auth"
 import { supabase } from "@/lib/supabase"
 
 export default function Signup(){
