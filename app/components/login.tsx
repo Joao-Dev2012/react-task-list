@@ -5,7 +5,7 @@ export default function Login(){
     const [loginEmail,setLoginEmail] = useState('')
     const [loginPassword,setLoginPassword] = useState('')
     async function handleLogIn() {
-        const { data, error } = await logIn(loginEmail,loginPassword)
+        const { data , error } = await logIn(loginEmail,loginPassword)
         console.log('DATA:',data)
         console.log('ERROR:',error)
         
