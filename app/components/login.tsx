@@ -7,6 +7,7 @@ export default function Login(){
             <h1>Log-In</h1>
             <input type="email"  onChange={(e)=> setLoginEmail( e.target.value)} value={loginEmail} placeholder='please, type your email' />
             <input type="password" onChange={(e)=> setLoginPassword( e.target.value)} value={loginPassword} placeholder='please, type your password' />
+            <button>Log-In</button>
         </div>
     )
 }

@@ -27,9 +27,9 @@ export default function App() {
 }, [])  
 
   return (
+
   <>
-    <Login />
-    <Signup/>
+  <Signup/>
     <div className="mx-auto flex min-h-svh max-w-5xl flex-col px-6 sm:px-10">
       <header className="flex items-center justify-between border-b border-neutral-300 py-6 sm:py-8">
         <span className="flex items-center gap-3 text-sm font-medium tracking-tight">
