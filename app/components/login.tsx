@@ -1,13 +1,19 @@
 'use client'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { logIn } from '@/services/auth'
 export default function Login(){
     const [loginEmail,setLoginEmail] = useState('')
     const [loginPassword,setLoginPassword] = useState('')
+    const tasksRouter = useRouter()
     async function handleLogIn() {
         const { data , error } = await logIn(loginEmail,loginPassword)
         console.log('DATA:',data)
         console.log('ERROR:',error)
+            if(data){
+                tasksRouter.push('/tasks')
+            }
+        
         
     }
     return(
