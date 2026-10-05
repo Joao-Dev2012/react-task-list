@@ -92,6 +92,11 @@ export default function Login() {
             <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
+        <div>
+          <p>
+            Don't have an account yet? <a href="/signup" className='underline'>Sign-Up for free!</a>
+          </p>
+        </div>
       </main>
 
       <footer className="border-t border-neutral-300 py-6 text-xs text-neutral-500">

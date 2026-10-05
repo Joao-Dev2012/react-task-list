@@ -1,14 +1,12 @@
 import { useState } from "react"
 import { signUp } from "@/services/auth"
-import { supabase } from "@/lib/supabase"
 
 export default function Signup(){
     const [signupEmail,setSignupEmail] = useState('')
     const [signupPassword,setSignupPassword] = useState('')
     async function handleSignUp(){
-        console.log(signupEmail,signupPassword)
-        const signupResult = await signUp(signupEmail,signupPassword)
-        console.log(signupResult)
+        const {data , error} = await signUp(signupEmail,signupPassword)
+        if (error){}
     }
     return(
         <div>
