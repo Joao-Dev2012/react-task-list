@@ -93,8 +93,8 @@ export default function Login() {
           </button>
         </div>
         <div>
-          <p>
-            Don't have an account yet? <a href="/signup" className='underline'>Sign-Up for free!</a>
+          <p className="font-serif text-2xl  leading-none tracking-[-0.055em] ">
+            Don't have an account yet? <a href="/signup" className='underline text-neutral-700 hover:text-red-300'>Sign-Up for free!</a>
           </p>
         </div>
       </main>

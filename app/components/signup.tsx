@@ -1,12 +1,21 @@
+'use client'
 import { useState } from "react"
 import { signUp } from "@/services/auth"
 
 export default function Signup(){
     const [signupEmail,setSignupEmail] = useState('')
     const [signupPassword,setSignupPassword] = useState('')
+    
     async function handleSignUp(){
         const {data , error} = await signUp(signupEmail,signupPassword)
-        if (error){}
+        if (error){
+            alert(`Couldn't create account.`)
+        }
+        else {
+            alert('Account created successfully. Check your email to confirm your account.')
+        }
+        console.log('DATA:', data)
+        console.log('ERROR:', error)    
     }
     return(
         <div>
