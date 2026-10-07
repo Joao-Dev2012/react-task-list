@@ -16,7 +16,7 @@ export async function getTasks() {
 
 }
 export async function createTask(task:string) {
-    const {data,error} = await supabase.from('tasks').insert({
+    const { data,error } = await supabase.from('tasks').insert({
         task: task,
         completed: false
     }).select().single()
@@ -26,5 +26,14 @@ export async function createTask(task:string) {
         throw new Error(`Error, couldn't create task`)
     }
 
+    return data
+}
+export async function updateTaskCompleted(id:number, completed:boolean) {
+    const { data,error } = await supabase.from('tasks').update({
+        completed:completed
+    }).eq('id',id)
+    if(error){
+        throw new Error(`Error,couldn't update task to completed`)
+    }
     return data
 }
