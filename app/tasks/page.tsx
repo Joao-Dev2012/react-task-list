@@ -1,7 +1,6 @@
 'use client'
-
-import   Signup from "@/app/components/signup"
-import { useState,useEffect } from 'react'
+import { supabase } from '@/lib/supabase'
+import { useState, useEffect } from 'react'
 import { getTasks, createTask } from '@/services/tasks'
 import { useRouter } from "next/navigation"
 
@@ -14,7 +13,11 @@ export default function App() {
     task:string
     completed:boolean
   }
-  
+  async function getCurrentUser(){
+    const { data , error } = await supabase.auth.getUser()
+
+    console.log(data.user)
+  }
   async function add() {
     const newTask = await createTask(task)
     setTasks([...tasks,newTask])
@@ -25,7 +28,7 @@ export default function App() {
       const data = await getTasks()
       setTasks(data)
   }
-
+  getCurrentUser()
   loadTasks()
 }, [])  
 
