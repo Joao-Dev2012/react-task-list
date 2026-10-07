@@ -1,29 +1,51 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { logIn } from '@/services/auth'
 
 export default function Login() {
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
   const [loginError, setLoginError] = useState('')
+  const [loginSuccess, setLoginSuccess] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const tasksRouter = useRouter()
 
+  useEffect(() => {
+    if (!loginSuccess) return
+
+    const timeout = window.setTimeout(() => tasksRouter.push('/tasks'), 1500)
+    return () => window.clearTimeout(timeout)
+  }, [loginSuccess, tasksRouter])
+
   async function handleLogIn() {
+    if (isLoading || loginSuccess) return
+
     setLoginError('')
+    setLoginSuccess('')
+    setIsLoading(true)
 
     try {
       const { data, error } = await logIn(loginEmail, loginPassword)
 
       if (error || !data.session || !data.user) {
-        setLoginError('Unable to log in. Check your email and password and try again.')
+        setLoginError(
+          error?.code === 'email_not_confirmed'
+            ? 'Please confirm your email using the link in your inbox before logging in.'
+            : error?.code === 'over_request_rate_limit'
+              ? 'Too many attempts. Please wait a few minutes before trying again.'
+              : 'We couldn’t log you in. Check your email and password, then try again.'
+        )
         return
       }
 
-      tasksRouter.push('/tasks')
+      setLoginSuccess('You’re logged in. Taking you to your tasks…')
     } catch {
-      setLoginError('Unable to log in right now. Please try again in a moment.')
+      setLoginError('We couldn’t connect right now. Check your connection and try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -48,7 +70,7 @@ export default function Login() {
           <p className="mt-5 text-sm leading-6 text-neutral-600 sm:text-base">Welcome back. Make room for what matters.</p>
         </div>
 
-        <div className="space-y-6">
+        <form className="space-y-6" onSubmit={(event) => { event.preventDefault(); void handleLogIn() }} aria-busy={isLoading}>
           <div>
             <label htmlFor="login-email" className="mb-3 block text-xs font-medium text-neutral-700">Email</label>
             <input
@@ -56,6 +78,8 @@ export default function Login() {
               className="task-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-4 text-base placeholder:text-neutral-400"
               type="email"
               autoComplete="email"
+              required
+              disabled={isLoading || Boolean(loginSuccess)}
               onChange={(e) => setLoginEmail(e.target.value)}
               value={loginEmail}
               placeholder="you@example.com"
@@ -70,6 +94,8 @@ export default function Login() {
               className="task-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-4 text-base placeholder:text-neutral-400"
               type="password"
               autoComplete="current-password"
+              required
+              disabled={isLoading || Boolean(loginSuccess)}
               onChange={(e) => setLoginPassword(e.target.value)}
               value={loginPassword}
               placeholder="Enter your password"
@@ -78,24 +104,33 @@ export default function Login() {
           </div>
 
           {loginError && (
-            <p id="login-error" role="alert" className="rounded-lg border border-neutral-300 bg-neutral-100 px-4 py-3 text-sm leading-6 text-neutral-700">
+            <p id="login-error" role="alert" className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800">
               {loginError}
             </p>
           )}
 
+          {loginSuccess && (
+            <p role="status" className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-800">
+              {loginSuccess}
+            </p>
+          )}
+
           <button
-            type="button"
-            className="add-button flex min-h-14 w-full items-center justify-center gap-3 rounded-lg bg-neutral-950 px-6 text-sm font-medium text-white"
-            onClick={handleLogIn}
+            type="submit"
+            disabled={isLoading || Boolean(loginSuccess)}
+            className="add-button flex min-h-14 w-full items-center justify-center gap-3 rounded-lg bg-neutral-950 px-6 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Log in
+            {isLoading ? 'Logging in…' : loginSuccess ? 'Logged in' : 'Log in'}
             <span aria-hidden="true">&rarr;</span>
           </button>
-        </div>
-        <div>
-          <p className="font-serif text-2xl  leading-none tracking-[-0.055em] ">
-            Don't have an account yet? <a href="/signup" className='underline text-neutral-700 hover:text-red-300'>Sign-Up for free!</a>
-          </p>
+        </form>
+
+        <div className="mt-8 flex flex-col items-center gap-3 border-t border-neutral-200 pt-6 text-sm sm:flex-row sm:justify-between">
+          <p className="text-neutral-500">New to Task List?</p>
+          <Link href="/signup" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-800 transition-colors hover:border-neutral-950 hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950 motion-reduce:transition-none">
+            Sign up for free
+            <span aria-hidden="true">&rarr;</span>
+          </Link>
         </div>
       </main>
 
@@ -105,3 +140,4 @@ export default function Login() {
     </div>
   )
 }
+
