@@ -1,7 +1,7 @@
 'use client'
 import { supabase } from '@/lib/supabase'
 import { useState, useEffect } from 'react'
-import { getTasks, createTask } from '@/services/tasks'
+import { getTasks, createTask, updateTaskCompleted } from '@/services/tasks'
 import { useRouter } from "next/navigation"
 
 export default function App() {
@@ -31,6 +31,19 @@ export default function App() {
   getCurrentUser()
   loadTasks()
 }, [])  
+  async function handleToggleCompleted(task: Task){
+    const  data  = await updateTaskCompleted(task.id,!task.completed)
+    setTasks(
+      tasks.map((item)=>{
+        if(item.id === task.id){
+          return {...item,completed: !task.completed}
+        }
+        
+        return item
+      })
+    )
+    return data
+  }
 
   return (
 
@@ -98,6 +111,7 @@ export default function App() {
                   <span aria-hidden="true" className="shrink-0 font-mono text-xs tabular-nums text-neutral-400">
                     {String(i + 1).padStart(2, '0')}
                   </span>
+                  <input type="checkbox" onChange={()=> handleToggleCompleted(task)} checked={task.completed} />
                   <span className="min-w-0 text-sm leading-7 wrap-anywhere sm:text-base">{task.task}</span>
                 </li>
               ))}
