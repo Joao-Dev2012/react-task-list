@@ -107,8 +107,8 @@ export default function App() {
           ) : (
             <ul className="divide-y divide-neutral-200 border-b border-neutral-200">
               {tasks.map((task, i) => (
-                <li key={task.id} className="task-row flex items-baseline gap-5 py-5 sm:gap-7">
-                  <span aria-hidden="true" className="shrink-0 font-mono text-xs tabular-nums text-neutral-400">
+                <li key={task.id} className="task-row flex items-baseline gap-5 py-5 sm:gap-7 text-neutral-400">
+                  <span aria-hidden="true" className="shrink-0 font-mono text-xs tabular-nums line-through text-neutral-400">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <input type="checkbox" onChange={()=> handleToggleCompleted(task)} checked={task.completed} />
